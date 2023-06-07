@@ -16,17 +16,16 @@ Omega = [];
 t=0;
 
 %% 搜索波数解的范围
-Ary = -1e-2;
-Bry = 3;
-dry = 1e-2;
+Ary = -1e-3;
+Bry = 7;
+dry = 1e-3;
 
-Aiy = -1e-2;
-Biy = 3;
-diy = 1e-2;
+Aiy = -1e-3;
+Biy = 7;
+diy = 1e-3;
 
 %% 搜索波数解
-for ii = 1:numel(w_sca) % 扫描频率的区间
-	tic
+parfor ii = 1:numel(w_sca) % 扫描频率的区间
 	aw = w_sca(ii);
 	for  ary = Ary:10*dry:Bry % 搜索波数解实部的范围
 		for aiy = Aiy:10*diy:Biy
@@ -62,6 +61,5 @@ for ii = 1:numel(w_sca) % 扫描频率的区间
 				end
 			end
 		end
-	end
-	toc
+    end
 end

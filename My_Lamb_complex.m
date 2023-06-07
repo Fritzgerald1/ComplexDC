@@ -5,8 +5,8 @@ CT = 3.13;
 h=0.5;
 
 %% 频率范围 MHZ
-lw = 1*2/pi;
-rw = 3*2/pi;
+lw = 1e-3/2*pi;
+rw = 6/2*pi;
 dw = (rw-lw)/1000;
 w_sca = lw:dw:rw;
 
@@ -23,11 +23,18 @@ T = toc(Ta);
 
 %% 绘图
 fig = figure();
+idr = (Kisym == 0);
+scatter3(Kisym(idr),Krsym(idr),Wsym(idr),1.5,'red')
 hold on
-MyDraw(Krs*h,Ws*h*2/(pi*CT),mode_s,fig);
+idi = (Krsym == 0);
+scatter3(Kisym(idi),Krsym(idi),Wsym(idi),1.5,'red')
+
+idc = (~(idi)) & (~(idr));
+scatter3(Kisym(idc),Krsym(idc),Wsym(idc),1.5,'blue')
 
 hold off
-title(['time=', num2str(T)]);legend('Symmetric','Asymmetric')
+view([135 15])
+title("Symmetric");
 
 %{
 %% 绘图
