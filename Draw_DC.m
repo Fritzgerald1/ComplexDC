@@ -7,7 +7,7 @@ h=0.5;
 %% 频率范围 MHZ
 lw = 1e-3/2*pi;
 rw = 6/2*pi;
-dw = (rw-lw)/1000;
+dw = (rw-lw)/2000;
 w_sca = lw:dw:rw;
 
 %% 求解波数
