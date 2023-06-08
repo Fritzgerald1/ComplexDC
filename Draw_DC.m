@@ -24,17 +24,17 @@ T = toc(Ta);
 %% 绘图
 fig = figure();
 idr = (Kisym == 0);
-scatter3(Kisym(idr),Krsym(idr),Wsym(idr),1.5,'red')
+s1 = scatter3(Kisym(idr),Krsym(idr),Wsym(idr),3,'red','filled');
 hold on
 idi = (Krsym == 0);
-scatter3(Kisym(idi),Krsym(idi),Wsym(idi),1.5,'red')
+s2 = scatter3(Kisym(idi),Krsym(idi),Wsym(idi),3,'black','filled');
 
 idc = (~(idi)) & (~(idr));
-scatter3(Kisym(idc),Krsym(idc),Wsym(idc),1.5,'blue')
+s3 = scatter3(Kisym(idc),Krsym(idc),Wsym(idc),3,'blue','filled');
 
 hold off
 view([135 15])
-title("Symmetric");
+title("Symmetric");	legend('real','image','complex')
 
 %{
 %% 绘图
