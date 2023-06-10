@@ -12,7 +12,7 @@ w_sca = lw:dw:rw;
 
 %% 求解波数
 Ta = tic;
-F1 = @lamb_sym_real2;
+F1 = @lamb_sym;
 [Krsym,Kisym,Wsym,mode_s] = get_wavenumber_complex(w_sca,F1);
 % 量纲还原
 Krs = Krsym/h;
