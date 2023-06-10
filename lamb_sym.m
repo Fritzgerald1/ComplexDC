@@ -1,4 +1,4 @@
-function [error,varargout] = lamb_sym_real2(kd,wd)
+function [error,varargout] = lamb_sym(kd,wd)
 %% 材料属性
 CL = 6.35;
 CT = 3.13;
