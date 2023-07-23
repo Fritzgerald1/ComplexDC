@@ -6,34 +6,35 @@ h=0.5;
 
 %% 频率范围 MHZ
 lw = 1e-3/2*pi;
-rw = 10/2*pi;
+rw = 6/2*pi;
 dw = (rw-lw)/2000;
 w_sca = lw:dw:rw;
 
 %% 求解波数
 Ta = tic;
-F1 = @lamb;
-[Kd,Wd,nmode] = get_wavenumber(w_sca,F1);
+F1 = @lamb_sym;
+[Krsym,Kisym,Wsym,mode_s] = get_wavenumber_complex(w_sca,F1);
 % 量纲还原
-% K = Kd/h;
-% W = Wd*CT/h;
+Krs = Krsym/h;
+Kis = Kisym/h;
+Ws = Wsym*CT/h;
+
 T = toc(Ta);
 
 %% 绘图
 fig = figure();
-plot(Kd,Wd,'.');
-% idr = (Kisym == 0);
-% s1 = scatter3(Kisym(idr),Krsym(idr),Wsym(idr),3,'red','filled');
-% hold on
-% idi = (Krsym == 0);
-% s2 = scatter3(Kisym(idi),Krsym(idi),Wsym(idi),3,'black','filled');
-% 
-% idc = (~(idi)) & (~(idr));
-% s3 = scatter3(Kisym(idc),Krsym(idc),Wsym(idc),3,'blue','filled');
-% 
-% hold off
-% view([135 15])
-% title("Symmetric");	legend('real','image','complex')
+idr = (Kisym == 0);
+s1 = scatter3(Kisym(idr),Krsym(idr),Wsym(idr),3,'red','filled');
+hold on
+idi = (Krsym == 0);
+s2 = scatter3(Kisym(idi),Krsym(idi),Wsym(idi),3,'black','filled');
+
+idc = (~(idi)) & (~(idr));
+s3 = scatter3(Kisym(idc),Krsym(idc),Wsym(idc),3,'blue','filled');
+
+hold off
+view([135 15])
+title("Symmetric");	legend('real','image','complex')
 
 %{
 %% 绘图
