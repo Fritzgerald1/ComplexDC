@@ -14,6 +14,10 @@ w_sca = lw:dw:rw;
 Ta = tic;
 F1 = @lamb;
 [Kd,Wd,nmode] = get_wavenumber(w_sca,F1);
+
+F1 = @lamb_asy;
+[Krsym,Kisym,Wsym,mode_s] = get_wavenumber_complex(w_sca,F1);
+
 % 量纲还原
 % K = Kd/h;
 % W = Wd*CT/h;
@@ -22,6 +26,7 @@ T = toc(Ta);
 %% 绘图
 fig = figure();
 plot(Kd,Wd,'.');
+savefig('Lamb_DC.fig')
 % idr = (Kisym == 0);
 % s1 = scatter3(Kisym(idr),Krsym(idr),Wsym(idr),3,'red','filled');
 % hold on
@@ -34,7 +39,6 @@ plot(Kd,Wd,'.');
 % hold off
 % view([135 15])
 % title("Symmetric");	legend('real','image','complex')
-
 %{
 %% 绘图
 fig = figure();
