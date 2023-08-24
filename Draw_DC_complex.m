@@ -1,40 +1,58 @@
-% function fig = My_Lamb
+clear;close all
+addpath(".\wave_function")
+addpath(".\get_wavenumber")
 %% 材料参数
-CL = 6.35;
-CT = 3.13;
-h=0.5;
+%%% 铝材
+lambda = 51e9;
+mu = 26e9;
+density = 2700;
 
-%% 频率范围 MHZ
-lw = 1e-3/2*pi;
-rw = 6/2*pi;
-dw = (rw-lw)/2000;
-w_sca = lw:dw:rw;
-
+%%% 波速
+CL = sqrt((lambda+2*mu)/density);
+CT = sqrt(mu/density);
+%% 几何参数
+h = 0.5e-3; % 半板厚
+%% 扫频范围
+f = [0, 10e6];
+num_dw = 2000; % 扫频点数
+w = 2*pi*f;
+dw = diff(w)/num_dw; % 扫频步长
+w_sca = w(1):dw:w(2) ;
 %% 求解波数
-Ta = tic;
-F1 = @lamb_sym;
-[Krsym,Kisym,Wsym,mode_s] = get_wavenumber_complex(w_sca,F1);
+Ta = tic; % 计时开始[Ta]
+wd_sca = w_sca*h/CT; % 无量纲化
+
+%%% 对称模态@lamb_sym 或 反对称模态@lamb_asy
+F1 = @lamb_sym; 
+[Kr,Ki,Wd,mode_s] = get_wavenumber_complex(wd_sca,lambda,mu,density,h,F1);
 % 量纲还原
-Krs = Krsym/h;
-Kis = Kisym/h;
-Ws = Wsym*CT/h;
+Krs = Kr/h;
+Kis = Ki/h;
+W = Wd*CT/h;
+F = W/2/pi;
 
-T = toc(Ta);
-
+T = toc(Ta); % 计时结束[Ta]
 %% 绘图
 fig = figure();
-idr = (Kisym == 0);
-s1 = scatter3(Kisym(idr),Krsym(idr),Wsym(idr),3,'red','filled');
+idr = (Ki == 0);
+s1 = scatter3(Ki(idr),Kr(idr),F(idr),3,'red','filled'); % 实部
 hold on
-idi = (Krsym == 0);
-s2 = scatter3(Kisym(idi),Krsym(idi),Wsym(idi),3,'black','filled');
+idi = (Kr == 0);
+s2 = scatter3(Ki(idi),Kr(idi),F(idi),3,'black','filled'); % 虚部
 
 idc = (~(idi)) & (~(idr));
-s3 = scatter3(Kisym(idc),Krsym(idc),Wsym(idc),3,'blue','filled');
+s3 = scatter3(Ki(idc),Kr(idc),F(idc),3,'blue','filled'); % 复数部
 
 hold off
 view([135 15])
-title("Symmetric");	legend('real','image','complex')
+legend('real','image','complex')
+char1 = char(F1);
+title(char1);
+
+mkdir output % 创建文件夹output，如果文件夹已存在，会有警告，但不影响运行
+date = datetime("now","Format","uuuu-MM-dd HH.mm.ss");
+name_fig = ['./output/', char1, '[', char(date), '].fig'] % 绘图文件名
+savefig(fig,name_fig)
 
 %{
 %% 绘图
